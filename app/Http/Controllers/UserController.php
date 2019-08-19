@@ -17,9 +17,11 @@ class UserController extends BaseController
     public function login(Request $request)
     {
         //接收登录数据
-        $data=file_get_contents('php://input');;
-        $data=json_decode($data,JSON_UNESCAPED_UNICODE);
-
+        $base64=file_get_contents('php://input');
+        $arr=base64_decode($base64);
+        $private_key=openssl_pkey_get_private("file://".storage_path('app/openssl/private_key.pem'));
+        openssl_private_decrypt($arr,$json_str,$private_key);
+        $data=json_decode($json_str,JSON_UNESCAPED_UNICODE);
         $userInfo=DB::table('api_user')->where('email',$data['email'])->first();    //根据邮箱查询用户数据
 
         if($userInfo){      //用户存在
