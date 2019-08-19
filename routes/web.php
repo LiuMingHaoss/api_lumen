@@ -16,10 +16,8 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->get('/test','TestController@test');
 
-//注册接口
-$router->post('/user/reg','UserController@reg');
+//登录
 $router->post('/user/login','UserController@login');
 
 $router->get('/user/my',[
